@@ -2,8 +2,13 @@ import pytest
 
 
 @pytest.fixture
-def case_key():
+def case_key_16():
     return bytes(i for i in range(16))
+
+
+@pytest.fixture
+def case_key_8():
+    return bytes(i for i in range(8))
 
 
 @pytest.fixture

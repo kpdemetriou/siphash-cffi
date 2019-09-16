@@ -4,15 +4,22 @@ from ._halfsiphash import ffi as __halfsiphash_ffi, lib as __halfsiphash_lib
 from ._halfsiphash_variable import ffi as __halfsiphash_variable_ffi, lib as __halfsiphash_variable_lib
 
 
-def __process_in(key, data, c_rounds, d_rounds):
+def __process_in(key, data, c_rounds, d_rounds, allowable_key_lengths):
     if not isinstance(key, bytes):
         raise TypeError("'key' must be of type 'bytes'")
 
     if not isinstance(data, bytes):
         raise TypeError("'data' must be of type 'bytes'")
 
-    if len(key) != 16:
-        raise ValueError("'key' must be of length '16'")
+    if len(key) not in allowable_key_lengths:
+        key_lengths_strings = ' or '.join(
+            "'{}'".format(length)
+            for length in allowable_key_lengths
+        )
+        raise ValueError("'key' must be of length {}, not {}".format(
+            key_lengths_strings,
+            len(key),
+        ))
 
     if not isinstance(c_rounds, int):
         raise TypeError("'c_rounds' must be of type 'int'")
@@ -71,7 +78,7 @@ def __compute_half_siphash(key, data, output_length, c_rounds, d_rounds):
 
 
 def siphash_64(key, data, c_rounds=2, d_rounds=4):
-    key, data, c_rounds, d_rounds = __process_in(key, data, c_rounds, d_rounds)
+    key, data, c_rounds, d_rounds = __process_in(key, data, c_rounds, d_rounds, [8, 16])
 
     if c_rounds == 2 and d_rounds == 4:
         code, digest = __compute_siphash24(key, data, 8)
@@ -82,7 +89,7 @@ def siphash_64(key, data, c_rounds=2, d_rounds=4):
 
 
 def siphash_128(key, data, c_rounds=2, d_rounds=4):
-    key, data, c_rounds, d_rounds = __process_in(key, data, c_rounds, d_rounds)
+    key, data, c_rounds, d_rounds = __process_in(key, data, c_rounds, d_rounds, [8, 16])
 
     if c_rounds == 2 and d_rounds == 4:
         code, digest = __compute_siphash24(key, data, 16)
@@ -93,7 +100,7 @@ def siphash_128(key, data, c_rounds=2, d_rounds=4):
 
 
 def half_siphash_32(key, data, c_rounds=2, d_rounds=4):
-    key, data, c_rounds, d_rounds = __process_in(key, data, c_rounds, d_rounds)
+    key, data, c_rounds, d_rounds = __process_in(key, data, c_rounds, d_rounds, [4, 8])
 
     if c_rounds == 2 and d_rounds == 4:
         code, digest = __compute_half_siphash24(key, data, 4)
@@ -104,7 +111,7 @@ def half_siphash_32(key, data, c_rounds=2, d_rounds=4):
 
 
 def half_siphash_64(key, data, c_rounds=2, d_rounds=4):
-    key, data, c_rounds, d_rounds = __process_in(key, data, c_rounds, d_rounds)
+    key, data, c_rounds, d_rounds = __process_in(key, data, c_rounds, d_rounds, [4, 8])
 
     if c_rounds == 2 and d_rounds == 4:
         code, digest = __compute_half_siphash24(key, data, 8)
