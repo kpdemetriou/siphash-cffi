@@ -6,17 +6,24 @@
 #    include: ['*']
 
 jobs:
-  - job: generate_matrix
-    displayName: Generate Matrix
+  - job: generate_test_matrix
+    displayName: Generate Test Matrix
     steps:
       - bash: |
           python ci/matrix.py
         name: generate_matrix
 
+  - job: generate_build_matrix
+    displayName: Generate Build Matrix
+    steps:
+      - bash: |
+          python ci/matrix.py --environment 'Linux-cpython-37-x86|Linux-cpython-37-x86_64|macOS-cpython-37-x86_64|Windows-cpython-37-x86|Windows-cpython-37-x86_64
+        name: generate_matrix
+
   - job: dist
-    displayName: Build Wheel and sdist
+    displayName: Build Wheels
     dependsOn:
-      - generate_matrix
+      - generate_build_matrix
     pool:
       vmImage: $[ variables.vmImage ]
     strategy:
@@ -39,13 +46,13 @@ jobs:
   - job: test
     displayName: Test
     dependsOn:
-      - generate_matrix
+      - generate_test_matrix
       - dist
     pool:
       vmImage: $[ variables.vmImage ]
     strategy:
       maxParallel: 4
-      matrix: $[ dependencies.generate_matrix.outputs['generate_matrix.JobsToRun'] ]
+      matrix: $[ dependencies.generate_test_matrix.outputs['generate_matrix.JobsToRun'] ]
     steps:
       - task: UsePythonVersion@0
         inputs:
