@@ -23,7 +23,7 @@ all_platforms = tuple(vm_images.keys())
 
 interpreters = collections.OrderedDict((
     ('CPython', 'CPython'),
-    ('PyPy', 'PyPy'),
+    # ('PyPy', 'PyPy'),
 ))
 
 
@@ -32,7 +32,7 @@ all_interpreters = tuple(interpreters.keys())
 
 versions = collections.OrderedDict((
     ('CPython', ('3.5', '3.6', '3.7')),
-    ('PyPy', ('3.5',)),
+    # ('PyPy', ('3.5',)),
 ))
 
 
