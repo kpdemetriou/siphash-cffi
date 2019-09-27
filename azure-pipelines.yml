@@ -20,7 +20,24 @@ jobs:
           python ci/matrix.py --environment 'Linux-CPython-37-x86_64|macOS-CPython-37-x86_64|Windows-CPython-37-x86_64'
         name: generate_build_matrix
 
-  - job: dist
+  - job: sdist
+    displayName: Build sdist
+    pool:
+      vmImage: 'ubuntu-16.04'
+    steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: 3.7
+          architecture: x64
+      - bash: |
+          python setup.py sdist --formats zip
+        displayName: Build sdist
+      - task: PublishBuildArtifacts@1
+        inputs:
+          pathToPublish: '$(System.DefaultWorkingDirectory)/dist/'
+          artifactName: dist
+
+  - job: wheels
     displayName: Build Wheels
     dependsOn:
       - generate_build_matrix
@@ -49,7 +66,7 @@ jobs:
     displayName: Test
     dependsOn:
       - generate_test_matrix
-      - dist
+      - wheels
     pool:
       vmImage: $[ variables.vmImage ]
     strategy:
