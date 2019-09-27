@@ -17,7 +17,7 @@ jobs:
     displayName: Generate Build Matrix
     steps:
       - bash: |
-          python ci/matrix.py --environment 'Linux-CPython-37-x86|Linux-CPython-37-x86_64|macOS-CPython-37-x86_64|Windows-CPython-37-x86|Windows-CPython-37-x86_64'
+          python ci/matrix.py --environment 'Linux-CPython-37-x86_64|macOS-CPython-37-x86_64|Windows-CPython-37-x86_64'
         name: generate_build_matrix
 
   - job: dist
