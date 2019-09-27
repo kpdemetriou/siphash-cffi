@@ -68,7 +68,7 @@ jobs:
           python -c 'import sys; print(sys.version); print(sys.platform)'
         displayName: Report Python version
       - bash: |
-          python -m pip install tox pytest-azurepipelines
+          python -m pip install tox
         displayName: Install tox
       - bash: |
           python -m pip download --only-binary --no-index --find-links dist/ --no-deps --dest dist2/ siphash-cffi
