@@ -71,7 +71,8 @@ jobs:
           python -m pip install tox pytest-azurepipelines
         displayName: Install tox
       - bash: |
-          python -m tox -e ${TOXENV} --installpkg dist/
+          python -m pip download --only-binary --no-index --find-links dist/ --no-deps --dest dist2/ siphash-cffi
+          python -m tox -e ${TOXENV} --installpkg dist2/*.whl
         displayName: tox
         env:
           TOXENV: $[ variables.TOXENV ]
