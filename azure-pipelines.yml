@@ -82,27 +82,27 @@ jobs:
 #        env:
 #          CODECOV_TOKEN: $(CODECOV_TOKEN)
 
-  - job: publish
-    displayName: Publish
-    dependsOn: test
-    pool:
-      vmImage: 'ubuntu-16.04'
-    steps:
-      - task: UsePythonVersion@0
-        inputs:
-          versionSpec: 3.7
-          architecture: x64
-      - task: DownloadBuildArtifacts@0
-        inputs:
-          artifactName: 'dist'
-          downloadPath: $(System.DefaultWorkingDirectory)
-      - bash: |
-          python -m venv venv
-          venv/bin/pip install twine
-        displayName: Build venv
-      - bash: |
-          venv/bin/python ci/twineontag.py
-        env:
-          TWINE_USERNAME: $(TWINE_USERNAME)
-          TWINE_PASSWORD: $(TWINE_PASSWORD)
-        displayName: Twine On Tag
+#  - job: publish
+#    displayName: Publish
+#    dependsOn: test
+#    pool:
+#      vmImage: 'ubuntu-16.04'
+#    steps:
+#      - task: UsePythonVersion@0
+#        inputs:
+#          versionSpec: 3.7
+#          architecture: x64
+#      - task: DownloadBuildArtifacts@0
+#        inputs:
+#          artifactName: 'dist'
+#          downloadPath: $(System.DefaultWorkingDirectory)
+#      - bash: |
+#          python -m venv venv
+#          venv/bin/pip install twine
+#        displayName: Build venv
+#      - bash: |
+#          venv/bin/python ci/twineontag.py
+#        env:
+#          TWINE_USERNAME: $(TWINE_USERNAME)
+#          TWINE_PASSWORD: $(TWINE_PASSWORD)
+#        displayName: Twine On Tag
