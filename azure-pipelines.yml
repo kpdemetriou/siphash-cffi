@@ -85,11 +85,12 @@ jobs:
           python -c 'import sys; print(sys.version); print(sys.platform)'
         displayName: Report Python version
       - bash: |
-          python -m pip install tox
+          python -m pip install tox tox-run-command
         displayName: Install tox
       - bash: |
           python -m pip download --only-binary --no-index --find-links dist/ --no-deps --dest dist2/ siphash-cffi
-          python -m tox -e ${TOXENV} --installpkg dist2/*.whl
+          python -m tox --run-command 'pip install pytest-azurepipelines'
+          python -m tox --installpkg dist2/*.whl
         displayName: tox
         env:
           TOXENV: $[ variables.TOXENV ]
