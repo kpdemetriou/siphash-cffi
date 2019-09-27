@@ -1,8 +1,9 @@
-trigger:
-  branches:
-    include: ['master']
-  tags:
-    include: ['*']
+# TODO: uncomment this to only build master and tags and PRs...  or something
+#trigger:
+#  branches:
+#    include: ['master']
+#  tags:
+#    include: ['*']
 
 jobs:
   - job: generate_matrix
