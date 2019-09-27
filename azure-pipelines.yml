@@ -63,6 +63,7 @@ jobs:
       - bash: |
           python -m tox -e ${TOXENV} --installpkg dist/*.whl
         displayName: tox
+        env:
           TOXENV: $[ variables.TOXENV ]
       - bash: |
           python -m tox -e codecov
