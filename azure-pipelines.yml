@@ -39,7 +39,7 @@ jobs:
           python -m cibuildwheel --output-dir dist
         displayName: Build Wheel
         env:
-          CIBW_SKIP: cp27-*
+          CIBW_SKIP: cp27-* cp34-*
       - task: PublishBuildArtifacts@1
         inputs:
           pathToPublish: '$(System.DefaultWorkingDirectory)/dist/'
